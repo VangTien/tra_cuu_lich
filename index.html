@@ -25,7 +25,7 @@
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            padding-bottom: 20px;
+            padding-bottom: 20px; /* Đảm bảo container không bị thiếu phần dưới */
         }
 
         h1 {
@@ -96,6 +96,7 @@
             background: #fffbe6;
         }
 
+        /* Color-coded text styles */
         .date-info {
             color: #007bff;
             font-weight: 600;
@@ -138,12 +139,6 @@
     </div>
 
     <script>
-        document.getElementById("yearInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                getAllHolidays();
-            }
-        });
-
         function convertToLunarDate(date) {
             const lunarDay = (date.getDate() - 10 + 30) % 30 || 30;
             const lunarMonth = (date.getMonth() + 1) % 12 || 12;
