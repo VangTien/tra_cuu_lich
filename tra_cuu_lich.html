@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Tra Cứu Ngày Lễ Việt Nam</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -24,6 +25,7 @@
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            padding-bottom: 20px; /* Đảm bảo container không bị thiếu phần dưới */
         }
 
         h1 {
@@ -114,6 +116,18 @@
             color: #6c757d;
             font-style: italic;
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                margin: 0 20px;
+            }
+
+            input, button {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -167,7 +181,7 @@
 
             const daysInYearDiv = document.createElement("div");
             daysInYearDiv.className = "holiday-card";
-            daysInYearDiv.innerHTML = `
+            daysInYearDiv.innerHTML = ` 
                 <div class="holiday-details">
                     <div class="date-info">📆 Năm ${year} có tổng cộng: ${totalDays} ngày</div>
                 </div>
@@ -209,7 +223,7 @@
                     resultsContainer.appendChild(holidayDiv);
                 });
             } catch (error) {
-                alert(`Connection error: ${error.message}`);
+                alert(`Lỗi kết nối: ${error.message}`);
             }
         }
     </script>
