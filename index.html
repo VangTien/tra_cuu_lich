@@ -38,7 +38,7 @@
             color: #fff;
         }
 
-        input, select {
+        input {
             width: 90%;
             margin: 20px auto;
             display: block;
@@ -96,7 +96,6 @@
             background: #fffbe6;
         }
 
-        /* Color-coded text styles */
         .date-info {
             color: #007bff;
             font-weight: 600;
@@ -117,21 +116,13 @@
             font-style: italic;
         }
 
-        .holiday-icon {
-            width: 30px;
-            height: 30px;
-            vertical-align: middle;
-            margin-right: 10px;
-        }
-
-        /* Responsive Design */
         @media (max-width: 768px) {
             .container {
                 width: 100%;
                 margin: 0 20px;
             }
 
-            input, button, select {
+            input, button {
                 width: 100%;
             }
         }
@@ -141,11 +132,6 @@
     <div class="container">
         <h1>Danh Sách Ngày Lễ Việt Nam</h1>
         <input id="yearInput" type="text" placeholder="Nhập năm (ví dụ: 2025)">
-        <select id="holidayFilter">
-            <option value="all">Tất cả</option>
-            <option value="important">Lễ Quan Trọng</option>
-            <option value="traditional">Lễ Truyền Thống</option>
-        </select>
         <button onclick="getAllHolidays()">Hiển Thị Ngày Lễ</button>
         <div id="results"></div>
     </div>
@@ -164,22 +150,21 @@
 
         function getTraditionalHolidays(year) {
             return [
-                { date: `${year}-01-01`, localName: "Tết Dương Lịch", description: "Ngày đầu năm mới theo dương lịch.", icon: "🥳" },
-                { date: `${year}-02-10`, localName: "Tết Nguyên Đán", description: "Lễ hội lớn nhất năm để đón chào năm mới âm lịch.", icon: "🎊" },
-                { date: `${year}-03-08`, localName: "Ngày Quốc Tế Phụ Nữ", description: "Ngày tôn vinh phụ nữ trên toàn thế giới.", icon: "♀️" },
-                { date: `${year}-04-30`, localName: "Ngày Giải Phóng Miền Nam", description: "Ngày thống nhất đất nước Việt Nam.", icon: "🇻🇳" },
-                { date: `${year}-05-01`, localName: "Ngày Quốc Tế Lao Động", description: "Ngày lễ dành cho người lao động trên toàn thế giới.", icon: "👷" },
-                { date: `${year}-06-01`, localName: "Ngày Quốc Tế Thiếu Nhi", description: "Ngày lễ dành riêng cho trẻ em.", icon: "👶" },
-                { date: `${year}-09-02`, localName: "Ngày Quốc Khánh Việt Nam", description: "Kỷ niệm ngày thành lập nước Việt Nam.", icon: "🇻🇳" },
-                { date: `${year}-08-15`, localName: "Rằm Tháng Tám", description: "Lễ Trung Thu truyền thống.", icon: "🌕" },
-                { date: `${year}-10-20`, localName: "Ngày Phụ Nữ Việt Nam", description: "Ngày đặc biệt để tôn vinh phụ nữ Việt Nam.", icon: "🌸" },
-                { date: `${year}-12-22`, localName: "Ngày Thành Lập Quân Đội", description: "Ngày kỷ niệm thành lập Quân đội Nhân dân Việt Nam.", icon: "🪖" }
+                { date: `${year}-01-01`, localName: "Tết Dương Lịch", description: "Ngày đầu năm mới theo dương lịch." },
+                { date: `${year}-02-10`, localName: "Tết Nguyên Đán", description: "Lễ hội lớn nhất năm để đón chào năm mới âm lịch." },
+                { date: `${year}-03-08`, localName: "Ngày Quốc Tế Phụ Nữ", description: "Ngày tôn vinh phụ nữ trên toàn thế giới." },
+                { date: `${year}-04-30`, localName: "Ngày Giải Phóng Miền Nam", description: "Ngày thống nhất đất nước Việt Nam." },
+                { date: `${year}-05-01`, localName: "Ngày Quốc Tế Lao Động", description: "Ngày lễ dành cho người lao động trên toàn thế giới." },
+                { date: `${year}-06-01`, localName: "Ngày Quốc Tế Thiếu Nhi", description: "Ngày lễ dành riêng cho trẻ em." },
+                { date: `${year}-09-02`, localName: "Ngày Quốc Khánh Việt Nam", description: "Kỷ niệm ngày thành lập nước Việt Nam." },
+                { date: `${year}-08-15`, localName: "Rằm Tháng Tám", description: "Lễ Trung Thu truyền thống." },
+                { date: `${year}-10-20`, localName: "Ngày Phụ Nữ Việt Nam", description: "Ngày đặc biệt để tôn vinh phụ nữ Việt Nam." },
+                { date: `${year}-12-22`, localName: "Ngày Thành Lập Quân Đội", description: "Ngày kỷ niệm thành lập Quân đội Nhân dân Việt Nam." }
             ];
         }
 
         async function getAllHolidays() {
             const year = document.getElementById("yearInput").value.trim();
-            const filter = document.getElementById("holidayFilter").value;
             if (!/^\d+$/.test(year)) {
                 alert("Vui lòng nhập một năm hợp lệ!");
                 return;
@@ -205,9 +190,18 @@
                 const response = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${year}/VN`);
                 const publicHolidays = response.ok ? await response.json() : [];
                 const importantHolidays = ["Tết Nguyên Đán", "Ngày Quốc Khánh Việt Nam"];
-                const allHolidays = [...publicHolidays, ...traditionalHolidays];
 
-                allHolidays.forEach(holiday => {
+                // Kết hợp các ngày lễ, đảm bảo không bị trùng lặp
+                const allHolidays = [...publicHolidays, ...traditionalHolidays];
+                
+                // Lọc ngày lễ trùng lặp theo tên và ngày
+                const uniqueHolidays = allHolidays.filter((holiday, index, self) => 
+                    index === self.findIndex((t) => (
+                        t.localName === holiday.localName && t.date === holiday.date
+                    ))
+                );
+
+                uniqueHolidays.forEach(holiday => {
                     const date = new Date(holiday.date);
                     const gregorianDate = date.toLocaleDateString("vi-VN", {
                         weekday: "long",
@@ -223,16 +217,10 @@
                         return;
                     }
 
-                    // Lọc ngày lễ theo loại
-                    if (filter !== 'all' && (filter === 'important' && !isImportant) || (filter === 'traditional' && isImportant)) {
-                        return;
-                    }
-
                     const holidayDiv = document.createElement("div");
                     holidayDiv.className = `holiday-card ${isImportant ? 'important-holiday' : ''}`;
                     holidayDiv.innerHTML = `
                         <div class="holiday-details">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Flag_of_Vietnam.svg" class="holiday-icon" alt="Icon">
                             <div class="date-info">📅 ${gregorianDate} (Âm lịch: ${lunarDate})</div>
                             <div class="name-info">🎉 ${holiday.localName}</div>
                             <div class="countdown-info">⏳ Còn ${daysRemaining} ngày</div>
@@ -245,13 +233,6 @@
                 alert(`Lỗi kết nối: ${error.message}`);
             }
         }
-
-        // Xử lý khi người dùng nhấn Enter để tìm kiếm
-        document.getElementById("yearInput").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                getAllHolidays();
-            }
-        });
     </script>
 </body>
 </html>
